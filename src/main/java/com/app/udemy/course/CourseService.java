@@ -1,12 +1,10 @@
 package com.app.udemy.course;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
+import java.util.List;
 import java.util.Optional;
 
 public interface CourseService {
-    Page<Course> findAll(Pageable pageable);
+    List<Course> findAll();
 
     Optional<Course> findById(Integer id);
 
@@ -14,6 +12,5 @@ public interface CourseService {
 
     void delete(Course entity);
 
-    Page<Course> findByTitleContaining(String title, Pageable page);
 
 }

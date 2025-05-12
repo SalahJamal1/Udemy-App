@@ -1,12 +1,10 @@
 package com.app.udemy.instructor;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
+import java.util.List;
 import java.util.Optional;
 
 public interface InstructorService {
-    Page<Instructor> findAll(Pageable pageable);
+    List<Instructor> findAll();
 
     Optional<Instructor> findById(Integer id);
 
@@ -14,7 +12,5 @@ public interface InstructorService {
 
     void delete(Instructor entity);
 
-
-    Page<Instructor> findInstructorsByNameOrCourseTitle(String name, String title, Pageable pageable);
 
 }

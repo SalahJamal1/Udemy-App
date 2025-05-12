@@ -1,16 +1,11 @@
 package com.app.udemy.course;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/courses")
@@ -19,44 +14,27 @@ public class CourseController {
 
     private final CourseService service;
 
+
     @GetMapping
-    public ResponseEntity<Map<String, Object>>
-    getCourses
-            (@RequestParam(value = "title", required = false)
-             String title
-                    , @RequestParam(value = "page", required = false, defaultValue = "0")
-             int page,
-             @RequestParam(value = "size", required = false, defaultValue = "6")
-             int size) {
-        try {
-            Pageable pageable = PageRequest.of(page, size);
-            Page<Course> courses = title != null ?
-                    service.findByTitleContaining(title.toLowerCase(), pageable)
-                    : service.findAll(pageable);
-            List<CourseRecourse> courseRecourse = courses.getContent().stream()
-                    .map(a -> CourseRecourse.builder()
-                            .description(a.getDescription())
-                            .price(a.getPrice()).imgUrl(a.getImgUrl())
-                            .id(a.getId())
-                            .instructorName(a.getInstructor().getName())
-                            .title(a.getTitle())
-                            .StudentsNumber(a.getStudents().size())
-                            .build()).toList();
+    public ResponseEntity<List<CourseRecourse>> getCourses() {
+        List<Course> courses = service.findAll();
+        List<CourseRecourse> courseRecourse = courses.stream()
+                .map(a -> CourseRecourse.builder()
+                        .description(a.getDescription())
+                        .price(a.getPrice()).imgUrl(a.getImgUrl())
+                        .id(a.getId())
+                        .instructorName(a.getInstructor().getName())
+                        .title(a.getTitle())
+                        .StudentsNumber(a.getStudents().size())
+                        .QuantityRating(a.getReviews().size())
+                        .AvgRating(a.AvgRating((a)))
+                        .reviews(a.reviewsResource(a))
+                        .build()).toList();
 
-            Map<String, Object> map = new LinkedHashMap<>();
-            map.put("status", "success");
-            map.put("result", courses.getContent().size());
-            map.put("data", courseRecourse);
-            map.put("currentPage", courses.getNumber());
-            map.put("totalPages", courses.getTotalPages());
-
-            return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(map);
-        } catch (Exception exc) {
-            System.out.println(exc.getMessage());
-            throw new RuntimeException(exc.getMessage());
-        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(courseRecourse);
+        
     }
 
 

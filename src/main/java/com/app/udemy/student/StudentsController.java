@@ -54,26 +54,13 @@ public class StudentsController {
     }
 
 
-    @PostMapping
-    public ResponseEntity<Students> addCourse(@AuthenticationPrincipal User user, @RequestBody Integer courseId) {
-        try {
-            Students students = user.getStudents();
-            return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(service.save(students));
-        } catch (Exception exc) {
-            System.out.println(exc.getMessage());
-            throw new RuntimeException(exc.getMessage());
-        }
-
-    }
-
     @PostMapping("/addStudentCourse")
     @Transactional
     public ResponseEntity<?>
     addCourse(@AuthenticationPrincipal User user,
               @RequestBody
               List<Course> entity) {
+        System.out.println(entity);
         if (user.getRoles() == Roles.ROLE_STUDENT) {
             Students students = user.getStudents();
             List<Course> existingCourses = students.getCourses();

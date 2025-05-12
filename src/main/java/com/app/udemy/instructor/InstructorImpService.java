@@ -3,11 +3,10 @@ package com.app.udemy.instructor;
 
 import com.app.udemy.course.Course;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,12 +16,13 @@ public class InstructorImpService implements InstructorService {
 
 
     @Override
-    public Page<Instructor> findAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public List<Instructor> findAll() {
+        return repository.findAll();
     }
 
     @Override
     public Optional<Instructor> findById(Integer id) {
+
         return repository.findById(id);
     }
 
@@ -44,8 +44,4 @@ public class InstructorImpService implements InstructorService {
     }
 
 
-    @Override
-    public Page<Instructor> findInstructorsByNameOrCourseTitle(String name, String title, Pageable pageable) {
-        return repository.findInstructorsByNameOrCourseTitle(name, title, pageable);
-    }
 }

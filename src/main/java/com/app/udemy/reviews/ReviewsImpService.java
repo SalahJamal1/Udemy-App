@@ -1,4 +1,4 @@
-package com.app.udemy.course;
+package com.app.udemy.reviews;
 
 
 import lombok.RequiredArgsConstructor;
@@ -10,29 +10,30 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CourseImpService implements CourseService {
-    private final CourseRepository repository;
+public class ReviewsImpService implements ReviewsService {
+    private final ReviewsRepository repository;
 
 
     @Override
-    public List<Course> findAll() {
+    public List<Reviews> findAll() {
         return repository.findAll();
     }
 
     @Override
-    public Optional<Course> findById(Integer id) {
+    public Optional<Reviews> findById(Integer id) {
         return repository.findById(id);
     }
 
     @Override
     @Transactional
-    public Course save(Course entity) {
+    public Reviews save(Reviews entity) {
+
         return repository.save(entity);
     }
 
     @Override
     @Transactional
-    public void delete(Course entity) {
+    public void delete(Reviews entity) {
         repository.delete(entity);
     }
 

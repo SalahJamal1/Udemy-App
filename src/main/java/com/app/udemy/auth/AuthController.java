@@ -46,7 +46,10 @@ public class AuthController {
     @GetMapping("/current")
     public ResponseEntity<?> getCurrent(@AuthenticationPrincipal User user) {
         if (user != null) {
-            String roles = user.getRoles().name().substring(5).toLowerCase();
+            String roles = user.getRoles()
+                    .name()
+                    .substring(5)
+                    .toLowerCase();
 
             UserDto userDto = UserDto.builder()
                     .email(user.getEmail())

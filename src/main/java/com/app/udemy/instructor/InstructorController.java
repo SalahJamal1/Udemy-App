@@ -5,17 +5,13 @@ import com.app.udemy.course.CourseService;
 import com.app.udemy.user.Roles;
 import com.app.udemy.user.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/instructors")
@@ -25,27 +21,11 @@ public class InstructorController {
     private final CourseService courseService;
 
     @GetMapping
-    public ResponseEntity<Map<String, Object>> getInstructors
-            (@RequestParam(value = "title", required = false) String title,
-             @RequestParam(value = "name", required = false) String name,
-             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-             @RequestParam(value = "size", required = false, defaultValue = "5") int size) {
-        System.out.println(title);
-        Pageable pageable = PageRequest.of(page, size);
-        Map<String, Object> map = new LinkedHashMap<>();
-        Page<Instructor> instructors = name != null && title != null ?
-                service.findInstructorsByNameOrCourseTitle(name, title, pageable) :
-                name != null ? service.findInstructorsByNameOrCourseTitle(name, null, pageable) :
-                        title != null ? service.findInstructorsByNameOrCourseTitle(null, title, pageable) :
-                                service.findAll(pageable);
-        map.put("status", "success");
-        map.put("result", instructors.getContent().size());
-        map.put("data", instructors.getContent());
-        map.put("current Page", page);
-        map.put("total page", instructors.getTotalPages());
+    public ResponseEntity<List<Instructor>> getInstructors() {
+
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(map);
+                .body(service.findAll());
 
     }
 

@@ -27,10 +27,13 @@ public class AuthService {
     private final InstructorService instructorService;
 
     public AuthResponse register(AuthRegister authRegister, HttpServletResponse response) {
+        Roles role = authRegister.getRoles().equalsIgnoreCase("student")
+                ? Roles.ROLE_STUDENT
+                : Roles.ROLE_INSTRUCTOR;
         User user = User.builder().fullName(authRegister.getFullName())
                 .email(authRegister.getEmail())
                 .password(passwordEncoder.encode(authRegister.getPassword()))
-                .roles(authRegister.getRoles())
+                .roles(role)
                 .build();
         if (user.getRoles() == Roles.ROLE_INSTRUCTOR) {
             Instructor instructor = Instructor.builder().name(user.getFullName()).build();

@@ -45,7 +45,7 @@ public class User implements UserDetails {
     @OneToOne
     @JoinColumn(name = "students_id", referencedColumnName = "id")
     private Students students;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "instructor_id", referencedColumnName = "id")
     private Instructor instructor;
 

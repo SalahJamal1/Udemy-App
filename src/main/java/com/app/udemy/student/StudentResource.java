@@ -1,4 +1,4 @@
-package com.app.udemy.auth;
+package com.app.udemy.student;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthRegister {
-    private String fullName;
-    private String password;
-    private String email;
-    private String roles;
+public class StudentResource {
+    private Integer id;
+    private String name;
 }
