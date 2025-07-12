@@ -3,9 +3,10 @@ package com.app.udemy.course;
 
 import com.app.udemy.instructor.Instructor;
 import com.app.udemy.reviews.Reviews;
-import com.app.udemy.reviews.ReviewsResource;
-import com.app.udemy.student.StudentResource;
+
+import com.app.udemy.reviews.dto.ReviewsDto;
 import com.app.udemy.student.Students;
+import com.app.udemy.student.dto.StudentDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -48,11 +49,11 @@ public class Course {
                 .average().orElse(0.0);
     }
 
-    public List<ReviewsResource> reviewsResource(Course course) {
+    public List<ReviewsDto> ReviewsDto(Course course) {
         return course.getReviews().stream()
-                .map(r -> ReviewsResource.builder()
+                .map(r -> ReviewsDto.builder()
                         .comment(r.getComment())
-                        .rating(r.getRating()).student(StudentResource
+                        .rating(r.getRating()).student(StudentDto
                                 .builder().id(r.getStudents().getId())
                                 .name(r.getStudents().getName()).build()).build()).toList();
     }

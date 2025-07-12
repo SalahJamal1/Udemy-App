@@ -19,6 +19,7 @@ import java.util.List;
 public class InstructorController {
     private final InstructorService service;
     private final CourseService courseService;
+    private final InstructorMapper mapper;
 
     @GetMapping
     public ResponseEntity<List<Instructor>> getInstructors() {
@@ -52,8 +53,7 @@ public class InstructorController {
     @PatchMapping
     public ResponseEntity<Instructor> updateInstructor(@RequestBody Instructor entity) {
         Instructor instructor = service.findById(entity.getId()).orElseThrow();
-        instructor.setName(entity.getName());
-        instructor.setImage(entity.getImage());
+            mapper.updateInstructor(entity, instructor);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)

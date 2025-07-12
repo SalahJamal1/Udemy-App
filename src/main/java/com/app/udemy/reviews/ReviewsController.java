@@ -18,6 +18,7 @@ import java.util.List;
 public class ReviewsController {
     private final ReviewsService service;
     private final CourseService courseService;
+    private final ReviewsMapper mapper;
 
     @GetMapping
     public ResponseEntity<List<Reviews>> getReviews() {
@@ -59,13 +60,12 @@ public class ReviewsController {
 
     @PatchMapping
     public ResponseEntity<Reviews> updateReviews(@RequestBody Reviews entity) {
-        Reviews Reviews = service.findById(entity.getId()).orElseThrow();
-        Reviews.setComment(entity.getComment());
-        Reviews.setRating(entity.getRating());
+        Reviews reviews = service.findById(entity.getId()).orElseThrow();
+        mapper.updateReviews(entity, reviews);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(service.save(Reviews));
+                .body(service.save(reviews));
     }
 
     @DeleteMapping("/{id}")

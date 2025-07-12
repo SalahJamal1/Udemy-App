@@ -1,4 +1,4 @@
-package com.app.udemy.student;
+package com.app.udemy.student.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentResource {
+public class StudentDto {
     private Integer id;
     private String name;
 }

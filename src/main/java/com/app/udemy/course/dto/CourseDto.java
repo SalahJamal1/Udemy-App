@@ -1,6 +1,6 @@
-package com.app.udemy.course;
+package com.app.udemy.course.dto;
 
-import com.app.udemy.reviews.ReviewsResource;
+import com.app.udemy.reviews.dto.ReviewsDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CourseRecourse {
+public class CourseDto {
 
     private Integer id;
     private String title;
@@ -23,6 +23,6 @@ public class CourseRecourse {
     private int StudentsNumber;
     private int QuantityRating;
     private float AvgRating;
-    private List<ReviewsResource> reviews;
+    private List<ReviewsDto> reviews;
 
 }

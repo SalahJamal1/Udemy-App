@@ -1,6 +1,6 @@
-package com.app.udemy.reviews;
+package com.app.udemy.reviews.dto;
 
-import com.app.udemy.student.StudentResource;
+import com.app.udemy.student.dto.StudentDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReviewsResource {
+public class ReviewsDto {
     private String comment;
     private float rating;
-    private StudentResource student;
+    private StudentDto student;
 }

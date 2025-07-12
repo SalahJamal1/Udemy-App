@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StudentsController {
     private final StudentsService service;
+    private final StudentsMapper mapper;
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> getStudents
@@ -84,12 +85,11 @@ public class StudentsController {
 
     @PatchMapping
     public ResponseEntity<Students> updateStudents(@RequestBody Students entity) {
-        Students Students = service.findById(entity.getId()).orElseThrow();
-        Students.setName(entity.getName());
-
+        Students students = service.findById(entity.getId()).orElseThrow();
+mapper.updateStudents(entity, students);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(service.save(Students));
+                .body(service.save(students));
     }
 
     @DeleteMapping("/{id}")

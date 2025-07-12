@@ -1,5 +1,6 @@
 package com.app.udemy.course;
 
+import com.app.udemy.course.dto.CourseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +14,13 @@ import java.util.List;
 public class CourseController {
 
     private final CourseService service;
-
+private final CourseMapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<CourseRecourse>> getCourses() {
+    public ResponseEntity<List<CourseDto>> getCourses() {
         List<Course> courses = service.findAll();
-        List<CourseRecourse> courseRecourse = courses.stream()
-                .map(a -> CourseRecourse.builder()
+        List<CourseDto> courseRecourse = courses.stream()
+                .map(a -> CourseDto.builder()
                         .description(a.getDescription())
                         .price(a.getPrice()).imgUrl(a.getImgUrl())
                         .id(a.getId())
@@ -28,7 +29,7 @@ public class CourseController {
                         .StudentsNumber(a.getStudents().size())
                         .QuantityRating(a.getReviews().size())
                         .AvgRating(a.AvgRating((a)))
-                        .reviews(a.reviewsResource(a))
+                        .reviews(a.ReviewsDto(a))
                         .build()).toList();
 
         return ResponseEntity.ok()
@@ -49,11 +50,7 @@ public class CourseController {
     @PatchMapping
     public ResponseEntity<Course> updateCourse(@RequestBody Course entity) {
         Course exstingCourse = service.findById(entity.getId()).orElseThrow();
-        exstingCourse.setDescription(entity.getDescription());
-        exstingCourse.setPrice(entity.getPrice());
-        exstingCourse.setTitle(entity.getTitle());
-        exstingCourse.setImgUrl(entity.getImgUrl());
-
+            mapper.updateCourse(entity, exstingCourse);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(service.save(exstingCourse));

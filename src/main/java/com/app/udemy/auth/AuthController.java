@@ -43,7 +43,7 @@ public class AuthController {
                 .body("{\"message\":\"you are successfully logout\"}");
     }
 
-    @GetMapping("/current")
+    @GetMapping("/me")
     public ResponseEntity<?> getCurrent(@AuthenticationPrincipal User user) {
         if (user != null) {
             String roles = user.getRoles()
