@@ -1,34 +1,75 @@
 package com.app.udemy.exception;
 
+import com.app.udemy.exception.AppErrorResponse;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
-import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class HandelException {
+
     @ExceptionHandler
-    private ResponseEntity<AppErrorResponse> handelException(RuntimeException exc) {
+    public ResponseEntity<AppErrorResponse> handelException(NoHandlerFoundException exc) {
         AppErrorResponse error = AppErrorResponse.builder()
-                .message(exc.getMessage())
+                .time(LocalDateTime.now())
                 .status(HttpStatus.NOT_FOUND.value())
-                .timestamp(Timestamp.from(Instant.now())).build();
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
-                .body(error);
+                .message("API endpoint not found")
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
-    private ResponseEntity<AppErrorResponse> handelException(Exception exc) {
+    public ResponseEntity<AppErrorResponse> handelException(RuntimeException exc) {
         AppErrorResponse error = AppErrorResponse.builder()
+                .time(LocalDateTime.now())
+                .status(HttpStatus.NOT_FOUND.value())
                 .message(exc.getMessage())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .timestamp(Timestamp.from(Instant.now())).build();
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value())
-                .body(error);
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<AppErrorResponse> handelException(DataIntegrityViolationException exc) {
+
+
+        AppErrorResponse error = AppErrorResponse.builder()
+                .time(LocalDateTime.now())
+                .status(HttpStatus.NOT_FOUND.value())
+                .message(exc.getRootCause().getMessage())
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<AppErrorResponse> handelException(ConstraintViolationException exc) {
+
+        String errors = exc.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining("|"));
+
+        AppErrorResponse error = AppErrorResponse.builder()
+                .time(LocalDateTime.now())
+                .status(HttpStatus.NOT_FOUND.value())
+                .message(errors)
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<AppErrorResponse> handelException(Exception exc) {
+        AppErrorResponse error = AppErrorResponse.builder()
+                .time(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message(exc.getMessage())
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+
 }

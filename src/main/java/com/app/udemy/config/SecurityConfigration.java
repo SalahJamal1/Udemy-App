@@ -16,6 +16,7 @@ public class SecurityConfigration {
     private final JwtAuthFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final CorsConfigurationSource corsConfigurationSource;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Bean
 
@@ -29,6 +30,7 @@ public class SecurityConfigration {
                 .sessionManagement(s ->
                         s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, J2eePreAuthenticatedProcessingFilter.class)
+                .exceptionHandling(a->a.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .build();
     }
 
